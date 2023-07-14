@@ -56,7 +56,7 @@ namespace ClubeDoLivroAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<UsuarioModel>> Atualizar([FromBody] UsuarioModel usuario, int id)
+        public async Task<ActionResult<UsuarioModel>> UpdateUser([FromBody] UsuarioModel usuario, int id)
         {
             usuario.Id = id;
 
