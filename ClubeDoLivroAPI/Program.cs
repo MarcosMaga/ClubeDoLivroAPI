@@ -13,7 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEntityFrameworkSqlServer()
     .AddDbContext<ClubeDoLivroDBContext>(
-        options => options.UseSqlServer(builder.Configuration.GetConnectionString("Database"))
+        options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
     );
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();

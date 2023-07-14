@@ -1,4 +1,5 @@
-﻿using ClubeDoLivroAPI.Models;
+﻿using ClubeDoLivroAPI.Data.Map;
+using ClubeDoLivroAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClubeDoLivroAPI.Data
@@ -15,6 +16,8 @@ namespace ClubeDoLivroAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new UsuarioMap());
+            modelBuilder.ApplyConfiguration(new LivroMap());
             base.OnModelCreating(modelBuilder);
         }
     }
