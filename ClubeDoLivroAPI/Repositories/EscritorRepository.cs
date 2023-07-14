@@ -40,7 +40,7 @@ namespace ClubeDoLivroAPI.Repositories
             EscritorModel target = await GetById(id);
 
             if (target == null)
-                throw new Exception($"Livro com ID {id} não encontrado");
+                throw new Exception($"Escritor com ID {id} não encontrado");
 
             target.Nome = escritor.Nome;
             target.Ano = escritor.Ano;

@@ -12,6 +12,8 @@ namespace ClubeDoLivroAPI.Data.Map
             builder.Property(x => x.Nome).IsRequired().HasMaxLength(255);
             builder.Property(x => x.Descricao).IsRequired().HasMaxLength(1000);
             builder.Property(x => x.Paginas).IsRequired();
+            builder.Property(x => x.EscritorId);
+            builder.HasOne(x => x.Escritor);
         }
     }
 }

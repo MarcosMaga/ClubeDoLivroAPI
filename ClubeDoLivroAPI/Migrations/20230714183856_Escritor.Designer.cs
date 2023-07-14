@@ -4,6 +4,7 @@ using ClubeDoLivroAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubeDoLivroAPI.Migrations
 {
     [DbContext(typeof(ClubeDoLivroDBContext))]
-    partial class ClubeDoLivroDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230714183856_Escritor")]
+    partial class Escritor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

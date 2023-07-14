@@ -6,5 +6,7 @@
         public string? Nome { get; set; }
         public string? Descricao { get; set; }
         public int? Paginas { get; set; }
+        public int EscritorId { get; set; }
+        public virtual EscritorModel? Escritor { get; set; }
     }
 }
