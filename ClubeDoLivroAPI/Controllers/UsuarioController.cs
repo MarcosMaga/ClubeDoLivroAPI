@@ -10,10 +10,12 @@ namespace ClubeDoLivroAPI.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IAvaliacaoRepository _avaliacaoRepository;
 
-        public UsuarioController(IUsuarioRepository usuarioRepository)
+        public UsuarioController(IUsuarioRepository usuarioRepository, IAvaliacaoRepository avaliacaoRepository)
         {
             _usuarioRepository = usuarioRepository;
+            _avaliacaoRepository = avaliacaoRepository;
         }
 
 
@@ -32,6 +34,13 @@ namespace ClubeDoLivroAPI.Controllers
             if (usuario == null)
                 return NotFound("Usuário não encontrado");
             return Ok(usuario);
+        }
+
+        [HttpGet("Avaliacoes/{id}")]
+        public async Task<ActionResult<List<AvaliacaoModel>>> GetAssessmentByUser(int id) 
+        {
+            List<AvaliacaoModel> avaliacoes = await _avaliacaoRepository.GetAvaliacoesByUser(id);
+            return Ok(avaliacoes);
         }
 
 

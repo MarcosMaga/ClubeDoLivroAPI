@@ -10,12 +10,12 @@ namespace ClubeDoLivroAPI.Controllers
     public class LivroController : ControllerBase
     {
         private readonly ILivroRepository _livroRepository;
-        private readonly IEscritorRepository _escritorRepository;
+        private readonly IAvaliacaoRepository _avaliacaoRepository;
 
-        public LivroController(ILivroRepository livroRepository, IEscritorRepository escritorRepository)
+        public LivroController(ILivroRepository livroRepository, IAvaliacaoRepository avaliacaoRepository)
         {
             _livroRepository = livroRepository;
-            _escritorRepository = escritorRepository;
+            _avaliacaoRepository = avaliacaoRepository;
         }
 
         [HttpGet]
@@ -23,9 +23,13 @@ namespace ClubeDoLivroAPI.Controllers
         {
             List<LivroModel> livros = await _livroRepository.GetAllBooks();
 
-            foreach (var livro in livros)
+            foreach(LivroModel livro in livros)
             {
-                livro.Escritor = await _escritorRepository.GetById(livro.EscritorId);
+                livro.UserNota = 0;
+                List<AvaliacaoModel> avaliacoes = await _avaliacaoRepository.GetAvaliacoesByLivros(livro.Id);
+                foreach (AvaliacaoModel avaliacao in avaliacoes)
+                    livro.UserNota += avaliacao.Nota;
+                livro.UserNota /= avaliacoes.Count();
             }
             return Ok(livros);
         }
@@ -34,11 +38,23 @@ namespace ClubeDoLivroAPI.Controllers
         public async Task<ActionResult<LivroModel>> GetBookById(int id)
         {
             LivroModel livro = await _livroRepository.GetById(id);
-            livro.Escritor = await _escritorRepository.GetById(livro.EscritorId);
+            livro.UserNota = 0;
+            List<AvaliacaoModel> avaliacoes = await _avaliacaoRepository.GetAvaliacoesByLivros(livro.Id);
+
+            foreach(AvaliacaoModel avaliacao in avaliacoes)
+                livro.UserNota += avaliacao.Nota;
+            livro.UserNota /= avaliacoes.Count();
 
             if(livro == null)
                 return NotFound("Livro não encontrado");
             return Ok(livro);
+        }
+
+        [HttpGet("Avaliacoes/{id}")]
+        public async Task<ActionResult<List<AvaliacaoModel>>> GetAvaliacoesByBook(int id)
+        {
+            List<AvaliacaoModel> avaliacoes = await _avaliacaoRepository.GetAvaliacoesByLivros(id);
+            return Ok(avaliacoes);
         }
 
         [HttpPost]

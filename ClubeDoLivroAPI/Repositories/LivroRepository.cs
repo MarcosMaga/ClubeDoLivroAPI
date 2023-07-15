@@ -8,10 +8,12 @@ namespace ClubeDoLivroAPI.Repositories
     public class LivroRepository : ILivroRepository
     {
         private readonly ClubeDoLivroDBContext _dbContext;
+        private readonly IEscritorRepository _escritorRepository;
 
-        public LivroRepository(ClubeDoLivroDBContext dbContext)
+        public LivroRepository(ClubeDoLivroDBContext dbContext, IEscritorRepository escritorRepository)
         {
             _dbContext = dbContext;
+            _escritorRepository = escritorRepository;
         }
 
         public async Task<LivroModel> Add(LivroModel book)
@@ -54,12 +56,27 @@ namespace ClubeDoLivroAPI.Repositories
 
         public async Task<List<LivroModel>> GetAllBooks()
         {
-            return await _dbContext.Livros.ToListAsync();
+            List<LivroModel> livros = await _dbContext.Livros.ToListAsync();
+   
+            foreach(LivroModel livro in livros)
+                livro.Escritor = await _escritorRepository.GetById(livro.EscritorId);
+            return livros;
+        }
+
+        public async Task<List<LivroModel>> GetByWriter(int writerId)
+        {
+            List<LivroModel> livros = await _dbContext.Livros.Where(x => x.EscritorId == writerId).ToListAsync();
+
+            foreach (LivroModel livro in livros)
+                livro.Escritor = await _escritorRepository.GetById(livro.EscritorId);
+            return livros;
         }
 
         public async Task<LivroModel> GetById(int id)
         {
-            return await _dbContext.Livros.FirstOrDefaultAsync(X => X.Id == id);
+            LivroModel livro = await _dbContext.Livros.FirstOrDefaultAsync(X => X.Id == id);
+            livro.Escritor = await _escritorRepository.GetById(livro.EscritorId);
+            return livro;
         }
 
     }

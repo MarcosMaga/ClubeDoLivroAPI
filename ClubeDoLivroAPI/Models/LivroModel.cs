@@ -1,4 +1,6 @@
-﻿namespace ClubeDoLivroAPI.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ClubeDoLivroAPI.Models
 {
     public class LivroModel
     {
@@ -8,5 +10,8 @@
         public int? Paginas { get; set; }
         public int EscritorId { get; set; }
         public virtual EscritorModel? Escritor { get; set; }
+
+        [NotMapped]
+        public virtual float? UserNota { get; set; }
     }
 }

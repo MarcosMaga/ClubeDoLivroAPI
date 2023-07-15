@@ -19,6 +19,7 @@ builder.Services.AddEntityFrameworkSqlServer()
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ILivroRepository, LivroRepository>();
 builder.Services.AddScoped<IEscritorRepository, EscritorRepository>();
+builder.Services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
 
 var app = builder.Build();
 

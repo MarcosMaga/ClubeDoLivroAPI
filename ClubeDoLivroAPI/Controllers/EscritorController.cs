@@ -10,10 +10,12 @@ namespace ClubeDoLivroAPI.Controllers
     public class EscritorController : ControllerBase
     {
         private readonly IEscritorRepository _escritorRepository;
+        private readonly ILivroRepository _livroRepository;
 
-        public EscritorController(IEscritorRepository escritorRepository)
+        public EscritorController(IEscritorRepository escritorRepository, ILivroRepository livroRepository)
         {
             _escritorRepository = escritorRepository;
+            _livroRepository = livroRepository;
         }
 
         [HttpGet]
@@ -31,6 +33,13 @@ namespace ClubeDoLivroAPI.Controllers
             if (escritor == null)
                 return NotFound("Escritor não encontrado");
             return Ok(escritor);
+        }
+
+        [HttpGet("Livros/{id}")]
+        public async Task<ActionResult<List<LivroModel>>> GetAllBooksByWriter(int id)
+        {
+            List<LivroModel> livros = await _livroRepository.GetByWriter(id);
+            return Ok(livros);
         }
 
         [HttpPost]

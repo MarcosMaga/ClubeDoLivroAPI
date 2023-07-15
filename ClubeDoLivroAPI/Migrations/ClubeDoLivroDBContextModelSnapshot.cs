@@ -22,6 +22,34 @@ namespace ClubeDoLivroAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ClubeDoLivroAPI.Models.AvaliacaoModel", b =>
+                {
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LivroId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<float>("Nota")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Opiniao")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("UsuarioId", "LivroId");
+
+                    b.HasIndex("LivroId");
+
+                    b.ToTable("Avaliacoes");
+                });
+
             modelBuilder.Entity("ClubeDoLivroAPI.Models.EscritorModel", b =>
                 {
                     b.Property<int>("Id")
@@ -56,7 +84,7 @@ namespace ClubeDoLivroAPI.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("EscritorId")
+                    b.Property<int>("EscritorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
@@ -101,11 +129,32 @@ namespace ClubeDoLivroAPI.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("ClubeDoLivroAPI.Models.AvaliacaoModel", b =>
+                {
+                    b.HasOne("ClubeDoLivroAPI.Models.LivroModel", "Livro")
+                        .WithMany()
+                        .HasForeignKey("LivroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClubeDoLivroAPI.Models.UsuarioModel", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Livro");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("ClubeDoLivroAPI.Models.LivroModel", b =>
                 {
                     b.HasOne("ClubeDoLivroAPI.Models.EscritorModel", "Escritor")
                         .WithMany()
-                        .HasForeignKey("EscritorId");
+                        .HasForeignKey("EscritorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Escritor");
                 });
