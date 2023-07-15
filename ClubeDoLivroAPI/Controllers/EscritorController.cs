@@ -35,7 +35,7 @@ namespace ClubeDoLivroAPI.Controllers
             return Ok(escritor);
         }
 
-        [HttpGet("Livros/{id}")]
+        [HttpGet("{id}/Livros")]
         public async Task<ActionResult<List<LivroModel>>> GetAllBooksByWriter(int id)
         {
             List<LivroModel> livros = await _livroRepository.GetByWriter(id);

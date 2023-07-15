@@ -11,11 +11,13 @@ namespace ClubeDoLivroAPI.Controllers
     {
         private readonly ILivroRepository _livroRepository;
         private readonly IAvaliacaoRepository _avaliacaoRepository;
+        private readonly IEmprestimoRepository _emprestimoRepository;
 
-        public LivroController(ILivroRepository livroRepository, IAvaliacaoRepository avaliacaoRepository)
+        public LivroController(ILivroRepository livroRepository, IAvaliacaoRepository avaliacaoRepository, IEmprestimoRepository emprestimoRepository)
         {
             _livroRepository = livroRepository;
             _avaliacaoRepository = avaliacaoRepository;
+            _emprestimoRepository = emprestimoRepository;
         }
 
         [HttpGet]
@@ -50,7 +52,16 @@ namespace ClubeDoLivroAPI.Controllers
             return Ok(livro);
         }
 
-        [HttpGet("Avaliacoes/{id}")]
+        [HttpGet("{id}/status")]
+        public async Task<ActionResult<Dictionary<string, string>>> GetStatusBook(int id)
+        {
+            bool disponivel = await _emprestimoRepository.VerifyBookIsDisponible(id, DateTime.Now);
+            Dictionary<string, string> status = new Dictionary<string, string>();
+            status.Add("status", disponivel ? "Disponível" : "Indisponível");
+            return status;
+        }
+
+        [HttpGet("{id}/Avaliacoes")]
         public async Task<ActionResult<List<AvaliacaoModel>>> GetAvaliacoesByBook(int id)
         {
             List<AvaliacaoModel> avaliacoes = await _avaliacaoRepository.GetAvaliacoesByLivros(id);

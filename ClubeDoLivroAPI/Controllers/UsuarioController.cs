@@ -11,11 +11,13 @@ namespace ClubeDoLivroAPI.Controllers
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IAvaliacaoRepository _avaliacaoRepository;
+        private readonly IEmprestimoRepository _emprestimoRepository;
 
-        public UsuarioController(IUsuarioRepository usuarioRepository, IAvaliacaoRepository avaliacaoRepository)
+        public UsuarioController(IUsuarioRepository usuarioRepository, IAvaliacaoRepository avaliacaoRepository, IEmprestimoRepository emprestimoRepository)
         {
             _usuarioRepository = usuarioRepository;
             _avaliacaoRepository = avaliacaoRepository;
+            _emprestimoRepository = emprestimoRepository;
         }
 
 
@@ -36,13 +38,19 @@ namespace ClubeDoLivroAPI.Controllers
             return Ok(usuario);
         }
 
-        [HttpGet("Avaliacoes/{id}")]
+        [HttpGet("{id}/Avaliacoes")]
         public async Task<ActionResult<List<AvaliacaoModel>>> GetAssessmentByUser(int id) 
         {
             List<AvaliacaoModel> avaliacoes = await _avaliacaoRepository.GetAvaliacoesByUser(id);
             return Ok(avaliacoes);
         }
 
+        [HttpGet("{id}/Emprestimos")]
+        public async Task<ActionResult<List<EmprestimoModel>>> GetLendingByUser(int id)
+        {
+            List<EmprestimoModel> emprestimos = await _emprestimoRepository.GetByUser(id);
+            return Ok(emprestimos);
+        }
 
         [HttpPost]
         public async Task<ActionResult<UsuarioModel>> Create([FromBody] UsuarioModel usuario)
