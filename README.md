@@ -5,7 +5,7 @@ Esta API, feita em C# e SQLServer tem o objetivo de gerenciar um clube do livro,
 ## Preparo
 
 * Para desenvolver esta API foi utilizado uma ORM para facilitar o uso do banco de dados, após baixar a API, no gerenciador de pacotes execute o comando `Update-Database -Context ClubeDoLivroDBContext`.
-* Lembre-se de configurar a instancia do seu banco de dados e reconfigura-lá no `appsettings.json`.
+* Lembre-se de configurar a instancia do seu banco de dados e reconfigura-lá no appsettings.json.
 
 ## Rotas e Endpoints
 
